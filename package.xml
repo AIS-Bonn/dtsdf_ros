@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>dtsdf_ros</name>
+  <version>0.1.0</version>
+  <description>ROS wrapper for the DirectionalTSDF package</description>
+
+  <maintainer email="malte.splietker@ais.uni-bonn.de">Malte Splietker</maintainer>
+
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>cv_bridge</depend>
+  <depend>geometry_msgs</depend>
+  <depend>image_transport</depend>
+  <depend>message_filters</depend>
+  <depend>nvidia-cuda</depend>
+  <depend>pcl_ros</depend>
+  <depend>roscpp</depend>
+  <depend>sensor_msgs</depend>
+  <depend>tf2_eigen</depend>
+  <depend>tf2_ros</depend>
+
+  <export>
+  </export>
+</package>
