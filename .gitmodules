@@ -1,3 +1,3 @@
 [submodule "DirectionalTSDF"]
 	path = DirectionalTSDF
-	url = git@github.com:AIS-Bonn/DirectionalTSDF.git
+	url = https://github.com/AIS-Bonn/DirectionalTSDF.git
