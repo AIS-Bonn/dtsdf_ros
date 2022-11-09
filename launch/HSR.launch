@@ -1,0 +1,17 @@
+<!-- Launch file to use DTSDF with Toyota HSR -->
+<launch>
+  <node name="tsdf" pkg="dtsdf_ros" type="dtsdf_node" output="screen">
+    <remap from="depth" to="/hsrb/head_rgbd_sensor/depth_registered/image_rect_raw"/>
+    <remap from="camera_info_depth" to="/hsrb/head_rgbd_sensor/depth_registered/camera_info"/>
+    <remap from="color" to="/hsrb/head_rgbd_sensor/rgb/image_rect_color"/>
+    <remap from="camera_info_color" to="/hsrb/head_rgbd_sensor/rgb/camera_info"/>
+    <param name="image_transport_color" value="compressed"/>
+
+    <rosparam file="$(find dtsdf_ros)/config/dtsdf_params.yaml" command="load"/>
+    <param name="settings_file" value="$(find dtsdf_ros)/config/settings.yaml"/>
+
+    <!-- HSR already has a map publisher, so we publish the DTSDF's "map_tsdf" ontop of the HSR's "map" instead of "odom" -->
+    <param name="tf_child_frame_id" value="map"/>
+    <param name="global_frame_id" value="map_tsdf"/>
+  </node>
+</launch>

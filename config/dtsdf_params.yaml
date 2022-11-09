@@ -1,0 +1,8 @@
+odom_frame_id: odom
+global_frame_id: map
+base_link_frame_id: base_link
+tf_child_frame_id: odom
+depth_scale_factor: 1000.0
+broadcast_tf: true
+use_odometry: true
+point_cloud_with_color: true

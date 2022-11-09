@@ -1,0 +1,58 @@
+# Device to run on
+deviceType: cuda  # [cpu, cuda]
+
+# enables or disables loop closure (voxel mode only)
+useLoopClosure: false
+
+# create all the things required for marching cubes and mesh extraction - uses additional memory (lots!)
+createMeshingEngine: true
+
+# how swapping works: disabled, fully enabled (still with dragons) and delete what's not visible - not supported in loop closure version
+swappingMode: disabled # [disabled, enabled, delete]
+
+# what to do on tracker failure: ignore, relocalise or stop integration - not supported in loop closure version
+behaviourOnFailure: ignore  # [ignore, relocalise, stopIntegration]
+
+# enable or disable pre-filtering of depth images (removes extreme outliers)
+useDepthFilter: true
+
+# enable or disable bilateral filtering of depth images
+useBilateralFilter: true
+
+# Whether to infer normals from SDF (slower) or neighboring points for tracking
+useSDFNormals: true
+
+# skips every other point when using the colour renderer for creating a point cloud
+skipPoints: false
+
+# enables or disables approximate raycast
+useApproximateRaycast: false
+
+voxelSceneParams:
+  voxelSize: 0.01
+  truncationDistance: 0.04
+  maxWeight: 10
+  minDistance: 0.1
+  maxDistance: 4.0
+  stopIntegratingAtMaxWeight: false
+
+  allocationSize: 200000 # number of blocks to allocate for TSDF
+
+fusionParams:
+  tsdfMode: default  # [directional, default]
+#  tsdfMode: directional  # [directional, default]
+  fusionMode: voxelProjection  # [voxelProjection, rayCastingNormal, rayCastingViewDirAndNormal, rayCastingViewDir]
+#  fusionMode: rayCastingViewDirAndNormal # [voxelProjection, rayCastingNormal, rayCastingViewDirAndNormal, rayCastingViewDir]
+  carvingMode: voxelProjection  # [voxelProjection, rayCasting]
+  fusionMetric: pointToPlane  # [pointToPoint, pointToPlane]
+  useWeighting: true
+  useSpaceCarving: true
+
+# Default ICP tracking:
+voxelTrackerConfig: "type=icp,levels=bbbb,
+  useDepth=1,useColour=0,
+  colourWeight=1.0,colourMode=f2kf,
+  minstep=1e-6,
+  outlierDistanceC=0.05,outlierDistanceF=0.005,
+  outlierColourC=0.175,outlierColourF=0.05,minColourGradient=0.001,
+  numiterC=20,numiterF=50,failureDec=50.0"

@@ -46,7 +46,7 @@ void TSDFMapper::Init()
 	nh.param("depth_scale_factor", depthScaleFactor, 1000.0f);
 	nh.param("broadcast_tf", broadcastTf, true);
 	nh.param("use_odometry", useOdometry, true);
-	nh.param("point_cloud_with_color", pointCloudWithColor, false);
+	nh.param("point_cloud_with_color", pointCloudWithColor, true);
 }
 
 bool TSDFMapper::InitEngine(const sensor_msgs::CameraInfoConstPtr& depthCameraInfo,
@@ -186,9 +186,9 @@ TSDFMapper::ImagePairCallback(const sensor_msgs::ImageConstPtr& depthMsg, const 
 	if (mainEngine->GetTrackingState()->trackerResult == ITMLib::ITMTrackingState::TRACKING_FAILED)
 		return;
 
+	publishTrackingResult();
 	publishImage();
 	publishPointCloud();
-	publishTrackingResult();
 }
 
 void TSDFMapper::CameraInfoCallback(const sensor_msgs::CameraInfoConstPtr& depthMsg,
@@ -232,7 +232,7 @@ void TSDFMapper::publishPointCloud()
 		return;
 
 	if (!pointCloud)
-		pointCloud = new ITMLib::ITMPointCloud(mainEngine->GetView()->depth->noDims, MEMORYDEVICE_CUDA);
+		pointCloud = new ITMLib::ITMPointCloud(mainEngine->GetView()->depth->noDims, true, true);
 	mainEngine->GetPointCloud(pointCloud, mainEngine->GetTrackingState()->pose_d,
 	                          &mainEngine->GetView()->calib.intrinsics_d, true);
 	pointCloud->locations->UpdateHostFromDevice();
@@ -308,7 +308,7 @@ void TSDFMapper::publishTrackingResult()
 	geometry_msgs::TransformStamped transform;
 	transform.header = currentDepthHeader;
 	transform.header.frame_id = globalFrameId;
-	transform.child_frame_id = odomFrameId;
+	transform.child_frame_id = tfChildFrameId;
 
 	Eigen::Vector3d translation = T_map_odom.col(3).head<3>();
 	Eigen::Quaterniond quaternion(T_map_odom.block<3, 3>(0, 0));

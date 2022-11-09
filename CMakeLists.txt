@@ -42,10 +42,10 @@ include_directories(
  ${catkin_INCLUDE_DIRS}
 )
 
-add_executable(${PROJECT_NAME}_node src/main.cpp src/Mapper.cpp)
-set_target_properties(${PROJECT_NAME}_node PROPERTIES OUTPUT_NAME node PREFIX "")
-add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(${PROJECT_NAME}_node
+add_executable(dtsdf_node src/main.cpp src/Mapper.cpp)
+set_target_properties(dtsdf_node PROPERTIES OUTPUT_NAME dtsdf_node PREFIX "")
+add_dependencies(dtsdf_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(dtsdf_node
   ${catkin_LIBRARIES}
   ITMLib::ITMLib
 )

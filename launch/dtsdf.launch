@@ -1,0 +1,6 @@
+<launch>
+  <node name="tsdf" pkg="dtsdf_ros" type="dtsdf_node">
+    <rosparam file="$(find dtsdf_ros)/config/dtsdf_params.yaml" command="load"/>
+    <param name="settings_file" value="$(find dtsdf_ros)/config/settings.yaml"/>
+  </node>
+</launch>
