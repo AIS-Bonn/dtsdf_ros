@@ -1,0 +1,17 @@
+<launch>
+  <node pkg="tf" type="static_transform_publisher" name="base_link_broadcaster" args="0 0 0 0 0 0 1 base_link camera_link 100" />
+  <node pkg="tf" type="static_transform_publisher" name="odom_broadcaster" args="0 0 0 0 0 0 1 odom base_link 100" />
+  <node name="tsdf" pkg="dtsdf_ros" type="dtsdf_node">
+    <remap from="depth" to="/camera/depth/image_rect_raw"/>
+    <remap from="camera_info_depth" to="/camera/depth/camera_info"/>
+    <remap from="color" to="/camera/color/image_raw"/>
+    <remap from="camera_info_color" to="/camera/color/camera_info"/>
+    <param name="image_transport_color" value="compressed"/>
+
+    <rosparam file="$(find dtsdf_ros)/config/dtsdf_params.yaml" command="load"/>
+    <param name="settings_file" value="$(find dtsdf_ros)/config/settings.yaml"/>
+    <param name="use_odometry" value="false"/>
+  </node>
+
+  <include file="$(find realsense2_camera)/launch/rs_camera.launch"/>
+</launch>
