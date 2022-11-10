@@ -147,7 +147,7 @@ TSDFMapper::ImagePairCallback(const sensor_msgs::ImageConstPtr& depthMsg, const 
 
 	cv_depth->image.convertTo(cv_depth->image, CV_16UC1);
 	memcpy(depthImage.GetData(MEMORYDEVICE_CPU), cv_depth->image.data,
-	       sizeof(short) * colorImage.noDims.width * colorImage.noDims.height);
+	       sizeof(short) * depthImage.noDims.width * depthImage.noDims.height);
 	memcpy(colorImage.GetData(MEMORYDEVICE_CPU), cv_color->image.data,
 	       sizeof(ITMLib::Vector4u) * colorImage.noDims.width * colorImage.noDims.height);
 
@@ -196,10 +196,13 @@ void TSDFMapper::CameraInfoCallback(const sensor_msgs::CameraInfoConstPtr& depth
 {
 	if (mainEngine)
 		return;
-	InitEngine(depthMsg, colorMsg);
+	bool success = InitEngine(depthMsg, colorMsg);
 
-	depthCameraInfoSubscriber.unsubscribe();
-	colorCameraInfoSubscriber.unsubscribe();
+	if (success)
+	{
+		depthCameraInfoSubscriber.unsubscribe();
+		colorCameraInfoSubscriber.unsubscribe();
+	}
 }
 
 void TSDFMapper::publishImage()
